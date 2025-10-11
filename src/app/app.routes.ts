@@ -4,6 +4,7 @@ import { Login } from './login/login';
 import { Signup } from './signup/signup';
 import { Profile } from './profile/profile';
 import { Cart } from './cart/cart';
+import { Details } from './details/details';
 
 export const routes: Routes = [
 
@@ -12,6 +13,7 @@ export const routes: Routes = [
     {path: 'signup', title: 'Signup', component: Signup},
     {path: 'profile', title: 'Profile', component: Profile},
     {path: 'cart', title: 'Cart', component: Cart},
+    {path: 'details/:permalink', title: 'Details', component: Details},
     {path: '**', redirectTo: ''}
 
 ];
