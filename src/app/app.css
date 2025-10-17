@@ -18,23 +18,41 @@
 }
 
 .dropdown-submenu {
+
   position: relative;
 }
 
+
 .dropdown-submenu > .dropdown-menu {
+
   display: none;
   position: absolute;
   top: 0;
   left: 100%;
   margin-left: 0.1rem;
   z-index: 1000;
+
 }
 
 .dropdown-submenu:hover > .dropdown-menu {
+
   display: block;
+
 }
 
 .dropdown-submenu > .dropdown-item::after {
+
   content: " ▶";
   float: right;
+
+}
+
+.logo{
+
+  size: 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+
 }

@@ -13,7 +13,13 @@ export class Signup {
 
   protected form: FormGroup
 
+  protected prikaziPassword: boolean
+  protected repeatPrikaziPassword: boolean
+
   constructor(private formBuilder: FormBuilder, protected router: Router){
+
+    this.prikaziPassword = false
+    this.repeatPrikaziPassword = false
 
     this.form = this.formBuilder.group({
 
@@ -55,6 +61,18 @@ export class Signup {
       return
 
     }
+
+  }
+
+  protected onOffPassword(){
+
+    this.prikaziPassword = !this.prikaziPassword
+
+  }
+
+  protected repeatOnOffPassword(){
+
+    this.repeatPrikaziPassword = !this.repeatPrikaziPassword
 
   }
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { Utils } from '../utils';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,11 @@ export class Login {
 
   protected form: FormGroup
 
-  constructor(private formBuilder: FormBuilder, protected router: Router){
+  protected prikaziPassword: boolean
+
+  constructor(private formBuilder: FormBuilder, protected router: Router, protected utils: Utils) {
+
+    this.prikaziPassword = false
 
     this.form = this.formBuilder.group({
 
@@ -23,29 +28,43 @@ export class Login {
     })
 
   }
-  
-  onSubmit(){
 
-    if (!this.form.valid){
+  onSubmit() {
+
+    if (!this.form.valid) {
+
+      this.utils.showError('Niste uneli sve podatke!')
 
       return
 
     }
 
-    try{
+    try {
 
       UserService.login(this.form.value.email, this.form.value.password)
 
-      const url = sessionStorage.getItem('ref') ?? ''
+      const url = sessionStorage.getItem('ref') ?? '/'
 
       sessionStorage.removeItem('ref')
       this.router.navigateByUrl(url)
 
-    } catch (e){
+      if ((window as any).refreshUser) {
 
+        (window as any).refreshUser()
 
+      }
+
+    } catch (e) {
+
+      this.utils.showError('Neispravn email ili lozinka!')
 
     }
+
+  }
+
+  protected onOffPassword(){
+
+    this.prikaziPassword = !this.prikaziPassword
 
   }
 

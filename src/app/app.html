@@ -10,19 +10,33 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" routerLink="/"><i class="fa-solid fa-house"></i> Home</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="istorija"><i class="fa-solid fa-clock-rotate-left"></i> Istorija Kupovina</a>
+        </li>
       </ul>
       <ul class="navbar-nav ms-auto">
         <li class="nav-item me-3 cart">
-          <a class="nav-link" routerLink="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
+          <a class="nav-link" routerLink="/cart"><i class="fa-solid fa-cart-shopping fa-2x"></i></a>
         </li>
         <li class="nav-item dropdown nav-user">
           <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
-            <i class="fa-solid fa-circle-user"></i>
+            @if (utils.user() === null) {
+              <img src="https://static.vecteezy.com/system/resources/thumbnails/047/733/682/small_2x/grey-avatar-icon-user-avatar-photo-icon-social-media-user-icon-vector.jpg" alt="" class="logo">
+            }
+            @else {
+              <img [src]="`https://ui-avatars.com/api/?name=${utils.user()!.ime}%20${utils.user()!.prezime}`" class="logo">
+            }
           </a>
           <ul class="dropdown-menu user-dropdown" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" routerLink="/login">login</a></li>
-            <li><a class="dropdown-item" routerLink="/signup">Signup</a></li>
+            @if (!hasAktivan()) {
+              <li><a class="dropdown-item" routerLink="/login"><i class="fa-solid fa-right-to-bracket"></i> login</a></li>
+              <li><a class="dropdown-item" routerLink="/signup"><i class="fa-solid fa-user-plus"></i> Signup</a></li>
+            }
+            @else {
+              <li><a class="dropdown-item" routerLink="/profile"><i class="fa-solid fa-user"></i> Profile</a></li>
+              <li><a class="btn dropdown-item" (click)="utils.logoutNow()"><i class="fa-solid fa-arrow-left"></i> Logout</a></li>
+            }
           </ul>
         </li>
       </ul>

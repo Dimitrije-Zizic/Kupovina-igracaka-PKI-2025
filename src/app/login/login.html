@@ -8,9 +8,14 @@
                 <label for="email" class="form-label">Email address:</label>
                 <input type="email" class="form-control" id="email" formControlName="email">
             </div>
-            <div class="mb-3">
+            <div class="mb-3 position-relative">
                 <label for="password" class="form-label">Password:</label>
-                <input type="password" class="form-control" id="password" formControlName="password">
+                <div class="input-group">
+                    <input [type]="prikaziPassword ? 'text' : 'password'" class="form-control" id="password" formControlName="password" autocomplete="off">
+                    <button type="button" class="btn btn-outline-secondary" (click)="onOffPassword()">
+                        <i [class]="prikaziPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+                    </button>
+                </div>
             </div>
             <div>
                 <button type="submit" class="btn btn-primary">

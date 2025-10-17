@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { IgrackaService } from '../services/igrackaService';
+import { AgeGroupModel } from '../models/ageGroupModel';
+import { TypeModel } from '../models/typeModel';
+import { UserService } from '../services/user.service';
 import { Utils } from './utils';
-import { IgrackaService } from '../services/IgrackaService';
-import { AgeGroupModel } from '../models/AgeGroupModel';
-import { TypeModel } from '../models/TypeModel';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,12 @@ export class App {
   protected uzrasti = signal<AgeGroupModel[]>([])
   protected tipovi = signal<TypeModel[]>([])
 
-  constructor(protected utils: Utils){
+  constructor(protected router: Router, public utils: Utils) {
+
+
+    (window as any).refreshUser = () => this.utils.refreshUser()
+
+    this.utils.refreshUser()
 
     IgrackaService.getAgeGroups()
       .then(rsp => {
@@ -32,6 +38,13 @@ export class App {
         this.tipovi.set(rsp.data)
 
       })
+
+
+  }
+
+  protected hasAktivan() {
+
+    return this.utils.user() !== null
 
   }
 
