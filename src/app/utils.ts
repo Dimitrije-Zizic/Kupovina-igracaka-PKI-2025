@@ -1,11 +1,22 @@
-import { Injectable } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import Swal from "sweetalert2";
+import { UserService } from "../services/user.service";
+import { Router } from "@angular/router";
+import { UserModel } from "../models/user.model";
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class Utils{
+
+  public user = signal<UserModel | null>(null)
+
+  constructor(protected router: Router){
+
+    this.refreshUser()
+
+  }
 
   public bootstrapClasses = {
 
@@ -64,6 +75,29 @@ export class Utils{
     })
 
   }
+
+  public showWarning(message: string, buttonText: string, callback: Function){
+
+    Swal.fire({
+
+      title: 'Upozorenje',
+      confirmButtonText: buttonText,
+      text: message,
+      icon: 'warning',
+      customClass: this.bootstrapClasses
+
+    }).then(result => {
+
+      if (result.isConfirmed){
+
+        callback()
+
+      }
+
+    })
+
+  }
+
   public showConfirm(message: string, callback:Function){
 
     Swal.fire({
@@ -82,6 +116,32 @@ export class Utils{
         callback()
 
       }
+
+    })
+
+  }
+
+  public refreshUser() {
+
+    try {
+
+      this.user.set(UserService.getActiveUser())
+
+    } catch {
+
+      this.user.set(null)
+
+    }
+
+  }
+
+  public logoutNow() {
+
+    this.showConfirm('Da li ste sigurni da želite da se odjavite?', () => {
+
+      UserService.logout()
+      this.user.set(null)
+      this.router.navigateByUrl('/login')
 
     })
 
