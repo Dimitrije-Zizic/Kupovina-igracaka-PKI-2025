@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
-import { IgrackaModel } from '../../models/IgrackaModel';
-import { IgrackaService } from '../../services/IgrackaService';
+import { IgrackaModel } from '../../models/igrackaModel';
+import { IgrackaService } from '../../services/igrackaService';
 import { Utils } from '../utils';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
+import { Istorija } from '../istorija/istorija';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,7 @@ export class Home {
 
   protected sve_igracke = signal<IgrackaModel[]>([])
   protected igracke = signal<IgrackaModel[]>([])
+  protected ocene = signal<Record<string, number>>({})
 
   constructor(protected utils: Utils){
 
@@ -33,6 +35,7 @@ export class Home {
       .then(rsp => {
         this.sve_igracke.set(rsp.data)
         this.pretraga()
+        this.ucitajOcene()
         Swal.close()
 
       })
@@ -117,6 +120,22 @@ export class Home {
     }
 
     return localStorage.getItem(key)!
+
+  }
+  
+  protected ucitajOcene(){
+
+    try{
+
+      const sveOcene = JSON.parse(localStorage.getItem(Istorija.OCENE_KEY) || '{}')
+
+      this.ocene.set(sveOcene)
+
+    } catch{
+
+      this.ocene.set({})
+
+    }
 
   }
 

@@ -1,5 +1,5 @@
-import { AgeGroupModel } from "./AgeGroupModel"
-import { TypeModel } from "./TypeModel"
+import { AgeGroupModel } from "./ageGroupModel"
+import { TypeModel } from "./typeModel"
 
 export interface IgrackaModel{
 
@@ -13,5 +13,6 @@ export interface IgrackaModel{
     imageUrl: string
     ageGroup: AgeGroupModel
     type: TypeModel
+    ocena?: number
 
 }

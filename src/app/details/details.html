@@ -10,7 +10,7 @@
             <div class="card-body">
                 <span class="badge text-bg-light mb-3">Naziv</span>
                 <h3 class="card-title naziv mb-3">{{igracka()!.name}}</h3>
-                <button class="btn btn-success" id="dodaj-u-korpu-btn">Dodaj u korpu</button>
+                <button class="btn btn-success" id="dodaj-u-korpu-btn" (click)="addToCart()"><i class="fa-solid fa-cart-shopping"></i>&nbsp;Dodaj u korpu</button>
                 <hr class="linija">
                 <span class="badge text-bg-light mb-3">Cena</span>
                 <h4 class="card-text cena">{{igracka()!.price}} RSD</h4>
@@ -31,6 +31,10 @@
                 <hr class="linija">
                 <span class="badge text-bg-light mb-3">Opis igračke</span>
                 <h5 class="card-text opis">{{igracka()!.description}}</h5>
+                <div class="d-flex justify-content-end align-items-center ocena">
+                    <span class="fw-bold">{{ocena()}}/5&nbsp;</span>
+                    <i class="fa-solid fa-star ocena-ikonica"></i>
+                </div>
             </div>
         </div>
     </div>

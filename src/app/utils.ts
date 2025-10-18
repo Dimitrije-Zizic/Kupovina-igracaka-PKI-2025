@@ -76,6 +76,18 @@ export class Utils{
 
   }
 
+  public showSuccess(text: string){
+
+    Swal.fire({
+
+      icon: 'success',
+      title: text,
+      customClass: this.bootstrapClasses
+
+    })
+
+  }
+
   public showError(message: string){
 
     Swal.fire({

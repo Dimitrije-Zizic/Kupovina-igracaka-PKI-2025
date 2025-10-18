@@ -1,9 +1,13 @@
-export interface UserModel{
+import { RezervacijaModel } from "./rezervacija.model"
 
-    ime: string,
-    prezime: string,
-    email: string,
-    password: string,
+export interface UserModel{
+    
+    ime: string
+    prezime: string
+    email: string
+    password: string
     telefon: string
+    korpa: RezervacijaModel[]
+    data: RezervacijaModel[]
 
 }

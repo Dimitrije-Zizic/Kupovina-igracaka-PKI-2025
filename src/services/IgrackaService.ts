@@ -1,7 +1,7 @@
 import axios from "axios";
-import { IgrackaModel } from "../models/IgrackaModel";
-import { AgeGroupModel } from "../models/AgeGroupModel";
-import { TypeModel } from "../models/TypeModel";
+import { IgrackaModel } from "../models/igrackaModel";
+import { AgeGroupModel } from "../models/ageGroupModel";
+import { TypeModel } from "../models/typeModel";
 
 const client = axios.create({
 
@@ -30,7 +30,7 @@ export class IgrackaService{
 
     }
 
-     static async getToyByIds(ids: number[]) {
+     static async getToysByIds(ids: number[]) {
         return await client.request<IgrackaModel[]>({
             url: '/toy/list',
             method: 'post',

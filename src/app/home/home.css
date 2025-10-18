@@ -1,0 +1,36 @@
+.card {
+
+    position: relative;
+
+}
+
+.ocena {
+
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(133, 129, 129, 0.85);
+    padding: 6px 12px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+    font-size: 1.4rem;
+    color: white;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+}
+
+.ocena-ikonica {
+
+    color: gold;
+    font-size: 1.6rem;
+
+}
+
+.baner{
+
+    height: 100%;
+
+}
