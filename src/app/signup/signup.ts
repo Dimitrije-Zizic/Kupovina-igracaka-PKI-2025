@@ -65,8 +65,6 @@ export class Signup {
       const formValue: any = this.form.value
       delete formValue.repeat
 
-      console.log('Form value:', formValue);
-
       UserService.signup(formValue)
       this.router.navigateByUrl('/login')
 
