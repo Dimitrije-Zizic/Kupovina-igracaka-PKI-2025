@@ -52,8 +52,6 @@ export class UserService {
 
         const user = this.findUserByEmail(email)
 
-        console.log('User found:', user);
-
         if (user.password !== password) {
 
             throw new Error('BAD_CREDENTIALS')
@@ -68,11 +66,8 @@ export class UserService {
 
         const users: UserModel[] = this.getUsers()
         users.push(user)
-        console.log('Users before saving:', users);
 
         localStorage.setItem(UserService.USERS_KEY, JSON.stringify(users))
-
-         console.log('Users in localStorage:', JSON.parse(localStorage.getItem(UserService.USERS_KEY)!));
 
     }
 
