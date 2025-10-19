@@ -1,5 +1,6 @@
 export interface RezervacijaModel{
-
+    
+    rezervacijaId: string
     toyId: number
     userId: string
     kolicina: number
@@ -7,5 +8,6 @@ export interface RezervacijaModel{
     createdAt: string
     updateAt: string | null
     status: 'rezervisano' | 'pristiglo' | 'otkazano'
+    ocene:number[]
 
 }

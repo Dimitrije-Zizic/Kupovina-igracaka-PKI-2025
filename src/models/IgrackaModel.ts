@@ -13,6 +13,6 @@ export interface IgrackaModel{
     imageUrl: string
     ageGroup: AgeGroupModel
     type: TypeModel
-    ocena?: number
-
+    ocena? : number
+    
 }

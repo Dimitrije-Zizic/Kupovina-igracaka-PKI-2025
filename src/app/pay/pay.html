@@ -7,7 +7,7 @@
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <form id="pay-form" [formGroup]="form" (ngSubmit)="potvrdiPlacanje()">
+                    <form id="pay-form" [formGroup]="form">
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="broj-kartice" class="form-label">Broj kartice</label>
@@ -23,7 +23,7 @@
                             <input type="text" class="form-control" id="cvv" formControlName="cvv" required>
                         </div>
                         <div class="d-flex justify-content-end gap-2">
-                            <button type="submit" [disabled]="!form.valid" id="submitBtn" class="btn btn-success">
+                            <button type="button" [disabled]="!form.valid" id="submitBtn" class="btn btn-success" (click)="potvrdiPlacanje()">
                                 <i class="fa-solid fa-credit-card"></i>Plati rezervaciju
                             </button>
                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#odustaniModal" (click)="odustani()">

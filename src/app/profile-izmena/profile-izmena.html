@@ -19,6 +19,32 @@
                         <label for="telefon" class="form-label">Telefon</label>
                         <input type="tel" class="form-control" id="telefon" formControlName="telefon">
                     </div>
+                    <div class="mb-3">
+                        <label for="adresa" class="form-label">Adresa</label>
+                        <input type="text" class="form-control" id="adresa" formControlName="adresa">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vrste" class="form-label">Omiljne vrste igračaka</label>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Izaberite omiljene vrste igračaka
+                            </button>
+                            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                                @for (vrsta of vrste(); track $index) {
+                                    <li (click)="vrsteSelection(vrsta.name)">
+                                        <a class="dropdown-item">
+                                            <input type="checkbox" [checked]="selectedVrste.includes(vrsta.name)">&nbsp;&nbsp;{{vrsta.name}}
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="selected-vrste mt-2">
+                            @for (selected of selectedVrste; track $index) {
+                                <span class="badge bg-secondary me-2">{{selected}}</span>
+                            }
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between">
                     <button class="btn btn-sm btn-primary">

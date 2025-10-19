@@ -7,6 +7,8 @@ export interface UserModel{
     email: string
     password: string
     telefon: string
+    adresa: string
+    omiljeneVrsteIgracaka: string[]
     korpa: RezervacijaModel[]
     data: RezervacijaModel[]
 

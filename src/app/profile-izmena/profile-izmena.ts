@@ -4,6 +4,8 @@ import { UserModel } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { Utils } from '../utils';
+import { TypeModel } from '../../models/typeModel';
+import { IgrackaService } from '../../services/igrackaService';
 
 @Component({
   selector: 'app-profile-izmena',
@@ -14,6 +16,8 @@ import { Utils } from '../utils';
 export class ProfileIzmena {
 
   protected user = signal<UserModel | null>(null)
+  protected vrste = signal<TypeModel[]>([])
+  protected selectedVrste: string[] = []
 
   protected profileForm: FormGroup
   protected passwordForm: FormGroup
@@ -27,17 +31,26 @@ export class ProfileIzmena {
 
       this.user.set(UserService.getActiveUser())
 
+      this.selectedVrste = this.user()!.omiljeneVrsteIgracaka || []
+
     } catch{
 
       
 
     }
 
-    this.profileForm = formBuilder.group({
+    IgrackaService.getTyps()
+      .then(rsp => {
+        this.vrste.set(rsp.data)
+        })
+
+    this.profileForm = this.formBuilder.group({
 
       ime: [this.user()!.ime, Validators.required],
       prezime: [this.user()!.prezime, Validators.required],
-      telefon: [this.user()!.telefon, Validators.required]
+      telefon: [this.user()!.telefon, Validators.required],
+      adresa: [this.user()!.adresa, Validators.required],
+      vrste: [this.user()!.omiljeneVrsteIgracaka, Validators.required]
 
     })
 
@@ -72,6 +85,30 @@ export class ProfileIzmena {
 
     })
     
+  }
+
+  protected vrsteSelection(vrsta: string){
+
+    const index = this.selectedVrste.indexOf(vrsta)
+
+    if (index > -1){
+
+      this.selectedVrste.splice(index, 1)
+
+    }
+
+    else{
+
+      this.selectedVrste.push(vrsta)
+
+    }
+
+    this.profileForm.patchValue({
+
+        vrste: this.selectedVrste
+
+    })
+
   }
 
   protected onPasswordSubmit(){

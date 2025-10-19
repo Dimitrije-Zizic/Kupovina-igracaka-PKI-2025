@@ -128,7 +128,7 @@ export class Cart {
 
         user.korpa.forEach(u => {
           
-          UserService.updateReservationStatus(u.createdAt, 'rezervisano')
+          UserService.updateReservationStatus(u.rezervacijaId, 'rezervisano')
 
         })
 

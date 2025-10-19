@@ -1,4 +1,6 @@
 import { UserModel } from "../models/user.model";
+import { v4 as uuidv4 } from 'uuid';
+
 
 export class UserService {
 
@@ -17,6 +19,8 @@ export class UserService {
                     email: 'petarpetrovic@gmail.com',
                     password: 'Petar123!',
                     telefon: '123456789',
+                    adresa: 'Neka Adresa 12/45',
+                    omiljeneVrsteIgracaka: ['Slagalica', 'Društvena igra'],
                     data: []
                 }
 
@@ -48,6 +52,8 @@ export class UserService {
 
         const user = this.findUserByEmail(email)
 
+        console.log('User found:', user);
+
         if (user.password !== password) {
 
             throw new Error('BAD_CREDENTIALS')
@@ -62,8 +68,11 @@ export class UserService {
 
         const users: UserModel[] = this.getUsers()
         users.push(user)
+        console.log('Users before saving:', users);
 
         localStorage.setItem(UserService.USERS_KEY, JSON.stringify(users))
+
+         console.log('Users in localStorage:', JSON.parse(localStorage.getItem(UserService.USERS_KEY)!));
 
     }
 
@@ -100,8 +109,39 @@ export class UserService {
                 u.ime = newUser.ime
                 u.prezime = newUser.prezime
                 u.telefon = newUser.telefon
+                u.adresa = newUser.adresa
+                u.omiljeneVrsteIgracaka = newUser.omiljeneVrsteIgracaka
                 u.korpa = newUser.korpa
                 u.data = newUser.data
+
+            }
+
+        })
+
+        localStorage.setItem(UserService.USERS_KEY, JSON.stringify(users))
+
+    }
+
+    static updateUserRaiting(toyId: number, ocena: number) {
+
+        const aktivanUser = this.getActiveUser()
+
+        const users = this.getUsers()
+
+        users.forEach(u => {
+
+            if (u.email === aktivanUser.email) {
+
+               u.data.forEach(r => {
+
+                    if (r.toyId == toyId){
+
+                        r.ocene.push(ocena)
+                        r.updateAt = new Date().toISOString()
+
+                    }
+
+               })
 
             }
 
@@ -146,15 +186,29 @@ export class UserService {
 
                 }
 
-                u.data.push({
-                    toyId: id,
-                    userId: aktivanUser.email,
-                    kolicina: 1,
-                    cena: price,
-                    createdAt: new Date().toISOString(),
-                    updateAt: null,
-                    status: "rezervisano"
-                })
+                const postoji = u.korpa.find(k => k.toyId == id)
+
+                if (postoji){
+
+                    postoji.kolicina++
+
+                }
+
+                else{
+
+                    u.data.push({
+                        rezervacijaId: uuidv4(),
+                        toyId: id,
+                        userId: aktivanUser.email,
+                        kolicina: 1,
+                        cena: price,
+                        createdAt: new Date().toISOString(),
+                        updateAt: null,
+                        status: "rezervisano",
+                        ocene:[]
+                    })
+
+                }
 
             }
 
@@ -180,13 +234,15 @@ export class UserService {
                 }
 
                 u.korpa.push({
+                    rezervacijaId:uuidv4(),
                     toyId: id,
                     userId: aktivanUser.email,
                     kolicina: 1,
                     cena: price,
                     createdAt: new Date().toISOString(),
                     updateAt: null,
-                    status: "rezervisano"
+                    status: "rezervisano",
+                    ocene: []
                 })
 
             }

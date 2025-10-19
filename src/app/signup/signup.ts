@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { IgrackaService } from '../../services/igrackaService';
+import { TypeModel } from '../../models/typeModel';
 
 @Component({
   selector: 'app-signup',
@@ -13,6 +15,9 @@ export class Signup {
 
   protected form: FormGroup
 
+  protected vrste = signal<TypeModel[]>([])
+  protected selectedVrste: string[] = []
+
   protected prikaziPassword: boolean
   protected repeatPrikaziPassword: boolean
 
@@ -21,6 +26,11 @@ export class Signup {
     this.prikaziPassword = false
     this.repeatPrikaziPassword = false
 
+    IgrackaService.getTyps()
+      .then(rsp => {
+          this.vrste.set(rsp.data)
+      })
+
     this.form = this.formBuilder.group({
 
       ime: ['', Validators.required],
@@ -28,7 +38,9 @@ export class Signup {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       repeat: ['', Validators.required],
-      telefon: ['', Validators.required]
+      telefon: ['', Validators.required],
+      adresa: ['', Validators.required],
+      vrste: [this.selectedVrste, Validators.required]
 
     })
 
@@ -53,12 +65,32 @@ export class Signup {
       const formValue: any = this.form.value
       delete formValue.repeat
 
+      console.log('Form value:', formValue);
+
       UserService.signup(formValue)
       this.router.navigateByUrl('/login')
 
     } catch (e){
 
       return
+
+    }
+
+  }
+
+  protected vrsteSelection(vrsta: string){
+
+    const index = this.selectedVrste.indexOf(vrsta)
+
+    if (index > -1){
+
+      this.selectedVrste.splice(index, 1)
+
+    }
+
+    else{
+
+      this.selectedVrste.push(vrsta)
 
     }
 

@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { UserModel } from '../../models/user.model';
 import { IgrackaModel } from '../../models/igrackaModel';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Utils } from '../utils';
 import { UserService } from '../../services/user.service';
 import { IgrackaService } from '../../services/igrackaService';
@@ -10,7 +10,7 @@ import { RezervacijaModel } from '../../models/rezervacija.model';
 
 @Component({
   selector: 'app-istorija',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './istorija.html',
   styleUrl: './istorija.css'
 })
@@ -26,12 +26,9 @@ export class Istorija {
 
   constructor(private router: Router, public utils: Utils){
     
-    let loadingTimeout = setTimeout(() => {
-      this.utils.showLoading()
-
-    }, 300)
-
     try{
+
+      this.utils.showLoading()
 
       const aktivakUser = UserService.getActiveUser()
 
@@ -40,11 +37,9 @@ export class Istorija {
 
       if (this.rezervacije().length == 0){
 
-        clearTimeout(loadingTimeout)
-
         Swal.close()
         
-        utils.showWarning('Još uvek niste obavili nijednu kupovinu.', 'Nazad na početnu stranu', () => {
+        this.utils.showWarning('Još uvek niste obavili nijednu kupovinu.', 'Nazad na početnu stranu', () => {
 
           router.navigateByUrl('/')
 
@@ -56,28 +51,22 @@ export class Istorija {
 
       else{
 
+        this.ucitajOcene()
+
         IgrackaService.getToysByIds(this.user()!.data.map(u => u.toyId))
           .then(rsp => {
 
             this.sve_igracke.set(rsp.data)
 
-            Swal.close()
-
           })
-          .catch (e => {
 
-            clearTimeout(loadingTimeout);
-            Swal.close();
-            this.utils.showError('Došlo je do greške prilikom učitavanja igračaka.');
-
-          })
+        Swal.close()
 
       }
       
 
     } catch{
 
-      clearTimeout(loadingTimeout)
       Swal.close()
       sessionStorage.setItem('ref', this.router.url)
       this.router.navigate(['/login'])
@@ -144,13 +133,14 @@ export class Istorija {
 
   protected oceni(toyId: number, ocena: number){
 
+    UserService.updateUserRaiting(toyId, ocena)
+
     const mapa = new Map(this.ocene())
     
     mapa.set(toyId, ocena)
     
     this.ocene.set(mapa)
 
-    
     const sve_ocene = JSON.parse(localStorage.getItem(Istorija.OCENE_KEY) || '{}')
 
     sve_ocene[toyId] = ocena
@@ -158,6 +148,8 @@ export class Istorija {
     localStorage.setItem(Istorija.OCENE_KEY, JSON.stringify(sve_ocene))
 
     this.utils.showSuccess(`Ocenili ste igračku sa ${ocena} <i class="fas fa-star" style="color: gold;"></i>.`)
+    
+    this.user.set(UserService.getActiveUser())
 
   }
 

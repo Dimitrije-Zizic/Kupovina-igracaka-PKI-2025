@@ -10,11 +10,11 @@
                     <tbody>
                         <tr>
                             <th scope="row">Ime:</th>
-                            <td>{{utils.user()?.ime}}</td>
+                            <td>{{utils.user()!.ime}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Prezime:</th>
-                            <td>{{utils.user()?.prezime}}</td>
+                            <td>{{utils.user()!.prezime}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -24,11 +24,29 @@
                     <tbody>
                         <tr>
                             <th scope="row">Email:</th>
-                            <td>{{utils.user()?.email}}</td>
+                            <td>{{utils.user()!.email}}</td>
                         </tr>
                         <tr>
                             <th scope="row">Telefon:</th>
-                            <td>{{utils.user()?.telefon}}</td>
+                            <td>{{utils.user()!.telefon}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-md-6">
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Adresa:</th>
+                            <td>{{utils.user()!.adresa}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Omiljene vrste igračaka:</th>
+                            <td>
+                                @for (vrsta of utils.user()!.omiljeneVrsteIgracaka; track $index) {
+                                    &nbsp;&nbsp;<span class="badge bg-secondary vrste">{{vrsta}}</span>
+                                }
+                            </td>
                         </tr>
                     </tbody>
                 </table>

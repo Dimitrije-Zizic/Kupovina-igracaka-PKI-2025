@@ -40,13 +40,24 @@ export class Pay {
     if (!this.form.valid){
 
       this.utils.showError('Popunite podatke ispravno!')
+
       return
 
     }
 
     const user = UserService.getActiveUser()
 
-    user.data = (user.data ?? []).concat(user.korpa)
+    if (user.korpa) {
+
+      user.korpa.forEach(u => {
+
+      u.status = 'pristiglo';
+
+    })
+
+    user.data = [...(user.data ?? []), ...user.korpa];
+
+    UserService.updateUser(user)
 
     user.data.forEach(u => {
 
@@ -58,10 +69,10 @@ export class Pay {
 
     UserService.updateUser(user)
     sessionStorage.removeItem(Cart.PAYMENTCARD_KEY)
-    this.utils.showAlert('Uspešno ste obavili kupovinu.')
-    this.router.navigateByUrl('/')
+    this.router.navigateByUrl('/istorija')
 
   }
+}
   
   protected odustani(){
 
